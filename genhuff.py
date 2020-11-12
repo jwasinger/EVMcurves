@@ -51,6 +51,8 @@ def gen_memcopy(dst_offset,src_offset,len_):
   print(hex(dst_offset-(32-len_)))
   print("mstore")
 
+def gen_return(offset, length):
+  print(" {} {} return".format(hex(length), hex(offset)))
 
 
 #########
@@ -254,7 +256,7 @@ def gen_f2mul(out,x,y,mod):
     gen_f1mul(tmp1,x0,y1,mod)
     gen_f1mul(tmp2,x1,y0,mod)
     gen_f1add(out1,tmp1,tmp2,mod)
-  elif 1:
+  elif 0:
     gen_f1mul(tmp1,x0,y0,mod)			# tmp1 = x0*y0
     gen_f1mul(tmp2,x1,y1,mod)			# tmp2 = x1*y1
     #gen_f1sub(tmp3,zero,tmp2,mod)		# tmp3 = zero-tmp2
@@ -275,7 +277,7 @@ def gen_f2mul(out,x,y,mod):
     gen_f1mul(out1,out1,tmp3,mod)		# out1 = out1*t3
     gen_f1sub(out1,out1,tmp1,mod)		# out1 = out1-t1
     gen_f1add(out1,out1,tmp2,mod)		# out1 = out1+t2
-  elif 0:
+  elif 1:
     gen_f1mul(tmp1,x0,y0,mod)                   # t1 = x0*y0
     gen_f1mul(tmp2,x1,y1,mod)                   # t2 = x1*y1
     gen_f1sub(out0,tmp1,tmp2,mod)               # out0 = t1-t2
@@ -1301,7 +1303,7 @@ def gen_miller_loop_test_input():
     inE2 += bytearray.fromhex("0ce5d527727d6e118cc9cdc6da2e351aadfd9baa8cbdd3a76d429a695160d12c923ac9cc3baca289e193548608b82801")[::-1] 
     inE2 += bytearray.fromhex("0606c4a02ea734cc32acd2b02bc28b99cb3e287e85a763af267492ab572e99ab3f370d275cec1da1aaa9075ff05f79be")[::-1] 
     gen_memstore(buffer_inputs+96,inE2)
-  if 0:
+  if 1:
     # from https://datatracker.ietf.org/doc/draft-irtf-cfrg-pairing-friendly-curves/?include_text=1 appendix B
     inE1  = bytearray.fromhex("17f1d3a73197d7942695638c4fa9ac0fc3688c4f9774b905a14e3a3f171bac586c55e83ff97a1aeffb3af00adb22c6bb")[::-1]
     inE1  += bytearray.fromhex("08b3f481e3aaa0f1a09e30ed741d8ae4fcf5e095d5d00af600db18cb2c04b3edd03cc744a2888ae40caa232946c5e7e1")[::-1]
@@ -1311,7 +1313,7 @@ def gen_miller_loop_test_input():
     inE2  += bytearray.fromhex("0ce5d527727d6e118cc9cdc6da2e351aadfd9baa8cbdd3a76d429a695160d12c923ac9cc3baca289e193548608b82801")[::-1]
     inE2  += bytearray.fromhex("0606c4a02ea734cc32acd2b02bc28b99cb3e287e85a763af267492ab572e99ab3f370d275cec1da1aaa9075ff05f79be")[::-1]
     gen_memstore(buffer_inputs+96,inE2)
-  if 1:
+  if 0:
     # from casey
     inE1  = bytearray.fromhex("0b83dfefb120fab7665a607d749ef1765fbb3cc0ba5827a20a135402c09d987c701ddb5b60f0f5495026817e8ab6ea2e")[::-1]
     inE1  += bytearray.fromhex("15c82e5362493d173e96edb436e396a30b9d3ae5d1a2633c375cfbbf3aed34bbc30448ec6b8102ab2f8da4486d23a717")[::-1]
@@ -1441,6 +1443,8 @@ def gen_miller_loop(out,P,Q,mod):
   gen_start_dbl(out,T,Px2,mod)
   gen_add_dbl_loop(out,T,Q,Px2,mod)
   gen_f12conjugate(out,mod)
+  gen_return(out, 32)
+  #import pdb; pdb.set_trace()
 
 
 
