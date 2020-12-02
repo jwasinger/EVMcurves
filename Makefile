@@ -2,7 +2,11 @@ all: build test
 
 test: test_evmone_evm384_bls12381_final_exp test_evmone_evm384_bls12381_miller_loop
 
-build: build_bls12381 build_bls12381_miller_loop_test
+build_benchmark_pushpop:
+	python3 genhuff.py > benchmark_push_pop.hex
+
+test_benchmark_pushpop_evmone:
+	./run_evmone_bench.sh benchmark_push_pop.hex ""
 
 build_bls12381:
 	python3 genhuff.py > bls12_381.huff
