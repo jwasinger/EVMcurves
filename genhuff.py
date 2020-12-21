@@ -21,6 +21,9 @@ SIZE_G1 = 96
 def gen_return(offset, length):
   print("{} {} return".format(length, offset))
 
+def gen_logf(offset, field_size, num_elems):
+  print("{} {} {} logf".format(offset, field_size, num_elems))
+
 #####################
 # memcopy and mstore
 
@@ -1390,7 +1393,8 @@ def gen_pairing_eq2_test_input():
     input_val += bytearray.fromhex("11922a097360edf3c2b6ed0ef21585471b1ab6cc8541b3673bb17e18e2867806aaa0c59dbccd60c3a5a9c0759e23f606")[::-1] 
     input_val += bytearray.fromhex("0083fd8e7e80dae507d3a975f0ef25a2bbefb5e96e0d495fe7e6856caa0a635a597cfa1f5e369c5a4c730af860494c4a")[::-1] 
     input_val += bytearray.fromhex("0b2bc2a163de1bf2e7175850a43ccaed79495c4ec93da33a86adac6a3be4eba018aa270a2b1461dcadc0fc92df64b05d")[::-1] 
-    gen_memstore(p_g1_1,input_val)
+    # gen_memstore(p_g2_2,input_val)
+    # gen_memstore(p_g2_2,input_val)
 
 
 ##############
@@ -1864,13 +1868,17 @@ def gen_pairing():
   # this is untested, but it has two miller loops, a f2mul, a final exponentiation, and an equality check
   print("#define macro PAIRING_EQ2 = takes(0) returns(0) {")
 
+  # gen_logf(p_g1_1, 48, 1)
+  # gen_logf(p_g2_1, 48, 12)
+  # gen_logf(p_g1_2, 48, 1)
+  # gen_logf(p_g2_2, 48, 12)
+
   # first miller loop
   gen_miller_loop(buffer_miller_output,p_g1_1,p_g2_1,mod)
   gen_memcopy(buffer_f12_function2,buffer_miller_output,48*12)
 
   # second miller loop
   gen_miller_loop(buffer_miller_output,p_g1_2,p_g2_2,mod)
-  
   gen_memcopy(buffer_f12_function,buffer_miller_output,48*12)
 
   # multiply the two miller loop outputs
