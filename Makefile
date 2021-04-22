@@ -1,8 +1,8 @@
 all: build test
 
-test: test_evmone_evm384_bls12381_final_exp test_evmone_evm384_bls12381_miller_loop
+test: test_evmone_evm384_bls12381_miller_loop
 
-build: build_bls12381 build_bls12381_miller_loop_test
+build: build_bls12381 build_bls12381_miller_loop_test build_bls12381_final_exp_test
 
 build_bls12381:
 	python3 genhuff.py > bls12_381.huff
